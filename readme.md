@@ -1,6 +1,6 @@
 # E-commerce Microservices
 
-This repository contains a collection of microservices designed for an e-commerce platform. Each service is built to be independent, scalable, and maintainable, following best practices for microservice architecture.
+This repository contains a collection of microservices designed for an e-commerce platform. Each service is built to be independent, scalable, and maintainable, following best practices for microservice architecture. This project aims to demonstrate a robust and modern approach to building distributed systems.
 
 ## Services
 
@@ -56,4 +56,44 @@ Currently, the following services are included:
 4.  **Run Services (in order):**
 
     a.  **Eureka Server:**
+        ```bash
+        cd eureka-server
+        mvn spring-boot:run
+        ```        cd config-server
+        mvn spring-boot:run
+        ```
+    c.  **API Gateway:**
+        ```bash
+        cd api-gateway
+        mvn spring-boot:run
+        ```
+    d.  **Product Service:**
+        ```bash
+        cd product-service
+        mvn spring-boot:run
+        ```
+    e.  **User Service:**
+        ```bash
+        cd user-service
+        mvn spring-boot:run
+        ```
+    f.  **Cart Service:**
+        ```bash
+        cd cart-service
+        mvn spring-boot:run
+        ```
+    g.  **Order Service:**
+        ```bash
+        cd order-service
+        mvn spring-boot:run
+        ```
+    h.  **Payment Service:**
+        ```bash
+        cd payment-service
+        mvn spring-boot:run
         
+    i.  **Notification Service:**
+        ```bash
+        cd notification-service
+        mvn spring-boot:run
+       
