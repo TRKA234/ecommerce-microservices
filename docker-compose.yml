@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
 
+# USER-SERVICE
   user-service:
     build: ./user-service
     ports:
@@ -30,3 +31,31 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"
+
+# PRODUCT-SERVICE
+  product-service:
+    build: ./product-service
+    ports:
+      - "8002:3000"
+    environment:
+      DB_HOST: product-db
+      DB_NAME: productdb
+      DB_USER: root
+      DB_PASS: root
+    depends_on:
+      - product-db
+
+  product-db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: productdb
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+
+  product-db-admin:
+    image: phpmyadmin
+    environment:
+      PMA_HOST: product-db
+    ports:
+      - "8081:80"
