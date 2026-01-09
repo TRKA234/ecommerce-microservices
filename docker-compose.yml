@@ -1,47 +1,47 @@
 version: "3.9"
 
 services:
-
-# USER-SERVICE
+  # ================= USER SERVICE =================
   user-service:
     build: ./user-service
     ports:
       - "8001:3000"
-    environment:
-      DB_HOST: user-db
-      DB_NAME: userdb
-      DB_USER: postgres
-      DB_PASS: postgres
     depends_on:
       - user-db
-
+    environment:
+      DB_HOST: user-db
+      DB_USER: user
+      DB_PASS: password
+      DB_NAME: userdb
   user-db:
-    image: postgres:16
+    image: postgres:15
     environment:
       POSTGRES_DB: userdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - userdb:/var/lib/postgresql/data
 
   user-db-admin:
     image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@local.com
-      PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - user-db
 
-# PRODUCT-SERVICE
+  # ================= PRODUCT SERVICE =================
   product-service:
     build: ./product-service
     ports:
       - "8002:3000"
     environment:
       DB_HOST: product-db
-      DB_NAME: productdb
       DB_USER: root
       DB_PASS: root
+      DB_NAME: productdb
     depends_on:
       - product-db
 
@@ -50,12 +50,36 @@ services:
     environment:
       MYSQL_DATABASE: productdb
       MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - productdb:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"
 
   product-db-admin:
     image: phpmyadmin
-    environment:
-      PMA_HOST: product-db
     ports:
       - "8081:80"
+    environment:
+      PMA_HOST: product-db
+    depends_on:
+      - product-db
+
+  # ================= CART SERVICE =================
+  cart-service:
+    build: ./cart-service
+    ports:
+      - "8003:8000"
+    environment:
+      PRODUCT_SERVICE_URL: http://product-service:3000
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - product-service
+      - redis
+
+  redis:
+    image: redis:alpine
+
+volumes:
+  userdb:
+  productdb:

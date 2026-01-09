@@ -95,3 +95,35 @@ app.delete("/products/:id", (req, res) => {
 app.listen(3000, () => {
   console.log("Product service running on port 3000");
 });
+
+// ================= READ BY ID =================
+app.get("/products/:id", (req, res) => {
+  db.query(
+    "SELECT * FROM products WHERE id = ?",
+    [req.params.id],
+    (err, rows) => {
+      if (err) return res.status(500).json(err);
+      if (rows.length === 0)
+        return res.status(404).json({ message: "product not found" });
+
+      res.json(rows[0]);
+    }
+  );
+});
+
+// ================= READ BY ID =================
+app.get("/products/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.query(
+    "SELECT * FROM products WHERE id = ?",
+    [id],
+    (err, rows) => {
+      if (err) return res.status(500).json(err);
+      if (rows.length === 0)
+        return res.status(404).json({ message: "product not found" });
+
+      res.json(rows[0]);
+    }
+  );
+});
