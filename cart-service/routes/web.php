@@ -9,6 +9,8 @@ $router->get('/health', function () {
 $router->post('/cart/add', 'CartController@add');
 $router->get('/cart/{userId}', 'CartController@get');
 $router->delete('/cart/remove', 'CartController@remove');
+$router->post('/cart/remove', 'CartController@remove');
+$router->delete('/cart/clear/{userId}', 'CartController@clear');
 
 $router->get('/test-product/{id}', function ($id) {
 
