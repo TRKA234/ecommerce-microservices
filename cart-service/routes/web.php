@@ -1,5 +1,19 @@
 <?php
 
+$router->get('/', function () {
+    return response()->json([
+        'message' => 'Cart service is running',
+        'routes' => [
+            'GET /cart/{userId}',
+            'POST /cart/add',
+            'POST /cart/remove',
+            'DELETE /cart/remove',
+            'DELETE /cart/clear/{userId}',
+        ]
+    ]);
+});
+
+
 $router->get('/health', function () {
     return response()->json([
         'status' => 'cart-service running'

@@ -10,6 +10,7 @@ let db;
 function connectWithRetry() {
   db = mysql.createConnection({
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT ||3306,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
@@ -115,17 +116,13 @@ app.get("/products/:id", (req, res) => {
 app.get("/products/:id", (req, res) => {
   const { id } = req.params;
 
-  db.query(
-    "SELECT * FROM products WHERE id = ?",
-    [id],
-    (err, rows) => {
-      if (err) return res.status(500).json(err);
-      if (rows.length === 0)
-        return res.status(404).json({ message: "product not found" });
+  db.query("SELECT * FROM products WHERE id = ?", [id], (err, rows) => {
+    if (err) return res.status(500).json(err);
+    if (rows.length === 0)
+      return res.status(404).json({ message: "product not found" });
 
-      res.json(rows[0]);
-    }
-  );
+    res.json(rows[0]);
+  });
 });
 
 app.use((err, req, res, next) => {
